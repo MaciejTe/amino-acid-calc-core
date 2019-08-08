@@ -9,3 +9,5 @@ dev:
 build:
 	go build -o application
 
+test:
+	go test

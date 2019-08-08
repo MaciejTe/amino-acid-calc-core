@@ -43,7 +43,7 @@ func initConfig() {
 	}
 }
 
-func Execute() {
+func Execute() int {
 	var rootCmd = &cobra.Command {
 		Use:   "application",
 		Short: "Golang CLI/REST API application",
@@ -67,6 +67,7 @@ func Execute() {
 	cobra.OnInitialize(initConfig)
 	if err := rootCmd.Execute(); err != nil {
 		log.Fatal(err)
-		os.Exit(1)
+		return 1
 	}
+	return 0
 }
