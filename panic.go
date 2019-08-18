@@ -31,7 +31,6 @@ func panicHandler(output string) {
 	os.Exit(1)
 }
 
-
 // save string to given file
 func saveDataToFile(f *os.File, output string) {
 	defer f.Close()

@@ -8,7 +8,6 @@ import (
 	"os"
 )
 
-
 func SetupRouter() *gin.Engine {
 	// create router with all necessary properties
 	router := gin.Default()
@@ -21,7 +20,6 @@ func SetupRouter() *gin.Engine {
 
 	// write to the log file and stdout at the same time
 	gin.DefaultWriter = io.MultiWriter(logFile, os.Stdout)
-
 
 	// v1 API group
 	v1 := router.Group("/api/v1")

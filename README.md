@@ -1,4 +1,6 @@
 # Golang Project Template
+[![Go Report Card](https://goreportcard.com/badge/github.com/MaciejTe/go-project-template)](https://goreportcard.com/report/github.com/MaciejTe/go-project-template)
+
 Template for Golang project.
 
 ## REST API

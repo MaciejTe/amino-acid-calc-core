@@ -10,12 +10,12 @@ import (
 )
 
 var (
-	ApiPort string
+	ApiPort        string
 	defaultPortVal = ":8080"
 )
 
 func Serve(rootCmd *cobra.Command) {
-	serveCmd := &cobra.Command {
+	serveCmd := &cobra.Command{
 		Use:   "serve",
 		Short: "Start REST API server",
 		PersistentPreRun: func(cmd *cobra.Command, args []string) {
@@ -33,16 +33,13 @@ func Serve(rootCmd *cobra.Command) {
 			router := api.SetupRouter()
 			log.Debug("Running command serve...")
 			apiMap := viper.GetStringMapString("api")
-			if len(apiMap["port"]) != 0  && ApiPort == defaultPortVal{
+			if len(apiMap["port"]) != 0 && ApiPort == defaultPortVal {
 				ApiPort = apiMap["port"]
 			}
 			log.Debug("Running REST API on port ", ApiPort)
-
 			router.Run(ApiPort)
 		},
 	}
 	serveCmd.PersistentFlags().StringVarP(&ApiPort, "port", "p", defaultPortVal, "API port")
-	//viper.BindPFlag("port", serveCmd.Flags().Lookup("port"))
-	//viper.BindPFlag("port", serveCmd.PersistentFlags().Lookup("port"))
 	rootCmd.AddCommand(serveCmd)
 }

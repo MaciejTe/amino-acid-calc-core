@@ -27,7 +27,7 @@ func initConfig() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		log.Debug("Loading config file from: config.yaml",)
+		log.Debug("Loading config file from: config.yaml")
 		viper.SetConfigType("yaml")
 		viper.SetConfigName("config")
 		viper.AddConfigPath(dir)
@@ -44,7 +44,7 @@ func initConfig() {
 }
 
 func Execute() int {
-	var rootCmd = &cobra.Command {
+	var rootCmd = &cobra.Command{
 		Use:   "application",
 		Short: "Golang CLI/REST API application",
 		Long:  "Sample Golang application",
