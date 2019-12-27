@@ -6,7 +6,13 @@ language: go
 go:
   - "1.13.1"
 
+before_install:
+  - go get -t -v ./...
+
 script:
-  - make test
+  - go test -race -coverprofile=coverage.txt -covermode=atomic
   - go mod verify
   - GOOS=linux go build
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
