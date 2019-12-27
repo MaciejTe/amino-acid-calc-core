@@ -1,0 +1,12 @@
+dist: trusty
+sudo: required
+services:
+  - docker
+language: go
+go:
+  - "1.13.1"
+
+script:
+  - make test
+  - go mod verify
+  - GOOS=linux go build
