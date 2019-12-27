@@ -1,12 +1,13 @@
 package cmd
 
 import (
+	"github.com/MaciejTe/amino-acid-calc/cmd/ingredient"
 	_ "github.com/davecgh/go-spew/spew"
+	"github.com/spf13/viper"
 	"os"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var (
@@ -14,8 +15,9 @@ var (
 	cfgFile string
 )
 
-func setupCommands(rootCmd *cobra.Command) {
-	Serve(rootCmd)
+func setupIngredientCommands(ingredientCmd *cobra.Command) {
+	ingredient.IngredientSearch(ingredientCmd)
+	ingredient.IngredientDetails(ingredientCmd)
 }
 
 func initConfig() {
@@ -44,10 +46,10 @@ func initConfig() {
 }
 
 func Execute() int {
-	var rootCmd = &cobra.Command{
-		Use:   "application",
-		Short: "Golang CLI/REST API application",
-		Long:  "Sample Golang application",
+	var rootCmd = &cobra.Command {
+		Use:   "amino-acid-calc-core",
+		Short: "Amino acids calculator application",
+		Long:  "Amino acids calculator application",
 		Run: func(cmd *cobra.Command, args []string) {
 			// print help and quit
 			if len(args) == 0 {
@@ -62,7 +64,25 @@ func Execute() int {
 	}
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file")
 
-	setupCommands(rootCmd)
+	var ingredientCmd = &cobra.Command{
+		Use:   "ingredient",
+		Short: "Ingredient related commands",
+		Long:  "Ingredient related commands",
+		Run: func(cmd *cobra.Command, args []string) {
+			// print help and quit
+			if len(args) == 0 {
+				err := cmd.Help()
+				if err != nil {
+					log.Error(err)
+					os.Exit(1)
+				}
+				os.Exit(0)
+			}
+		},
+	}
+	rootCmd.AddCommand(ingredientCmd)
+
+	setupIngredientCommands(ingredientCmd)
 
 	cobra.OnInitialize(initConfig)
 	if err := rootCmd.Execute(); err != nil {

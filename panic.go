@@ -9,7 +9,7 @@ import (
 const panicOutput = `
 !!!!!!!!!!!!!!!!!!!!!!!!!!! APPLICATION CRASH !!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-Go project template crashed! This is always indicative of a bug within application.
+Amino acids calculator core crashed! This is always indicative of a bug within application.
 A crash log saving and other necessary actions can be run inside panicHandler() function.
 If you are experiencing this, please report crash logs and other helpful information by submitting a bug in project issues[1]. 
 Thank you!

@@ -1,12 +1,16 @@
 package main
 
 import (
-	"github.com/MaciejTe/go-project-template/cmd"
+	"github.com/MaciejTe/amino-acid-calc/cmd"
 	"github.com/mitchellh/panicwrap"
+	log "github.com/sirupsen/logrus"
 	"os"
 )
 
 func main() {
+	log.SetFormatter(&log.JSONFormatter{})
+	log.SetOutput(os.Stdout)
+
 	exitStatus, err := panicwrap.BasicWrap(panicHandler)
 	if err != nil {
 		// Something went wrong setting up the panic wrapper. Unlikely,
