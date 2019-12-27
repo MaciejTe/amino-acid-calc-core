@@ -16,6 +16,7 @@ var (
 	ingredientID string
 )
 
+// IngredientDetails gets given ingredient details from USDA database.
 func IngredientDetails(ingredientCmd *cobra.Command) {
 	detailsCmd := &cobra.Command{
 		Use:   "details",

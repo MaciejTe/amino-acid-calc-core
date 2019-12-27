@@ -5,10 +5,11 @@ import (
 	"fmt"
 	"github.com/spf13/viper"
 
-	_ "github.com/lib/pq"
+	_ "github.com/lib/pq" // postgreSQL driver
 	log "github.com/sirupsen/logrus"
 )
 
+// NewDbClient returns postgresql database handle client.
 func NewDbClient() (*sql.DB, error) {
 	log.Debug("Getting database connection parameters from configuration file...")
 	dbConfig := viper.GetStringMapString("db")

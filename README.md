@@ -15,7 +15,7 @@ Amino acid calculator core application.
 
 
 ### TODO
-- [ ] Prepare documentation & README  Found 6 issues across 8 files
+- [ ] Prepare documentation & README
 - [ ] Set up Travis CI (go fmt, go vet, go lint)
 - [ ] Set up Git hooks (go fmt/vet before commit?)
 - [ ] Write tests (use testify)

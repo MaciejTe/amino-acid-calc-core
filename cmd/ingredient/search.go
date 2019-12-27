@@ -12,9 +12,10 @@ import (
 )
 
 var (
-	food        string
+	food string
 )
 
+// IngredientSearch searches for possible ingredients in USDA database.
 func IngredientSearch(ingredientCmd *cobra.Command) {
 	searchCmd := &cobra.Command{
 		Use:   "search",

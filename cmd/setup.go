@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"github.com/MaciejTe/amino-acid-calc/cmd/ingredient"
-	_ "github.com/davecgh/go-spew/spew"
 	"github.com/spf13/viper"
 	"os"
 
@@ -45,8 +44,9 @@ func initConfig() {
 	}
 }
 
+// Execute initializes all CLI commands inside application.
 func Execute() int {
-	var rootCmd = &cobra.Command {
+	var rootCmd = &cobra.Command{
 		Use:   "amino-acid-calc-core",
 		Short: "Amino acids calculator application",
 		Long:  "Amino acids calculator application",

@@ -6,40 +6,42 @@ import (
 	"github.com/spf13/cast"
 )
 
+// Ingredient structure holds information about all major food data.
 type Ingredient struct {
-	ID string
-	Description string
-	AminoAcids AminoAcids
+	ID            string
+	Description   string
+	AminoAcids    AminoAcids
 	Carbohydrates float32
-	Protein float32
-	Fat float32
-	Kcal float32
+	Protein       float32
+	Fat           float32
+	Kcal          float32
 }
 
+// AminoAcids structure holds all necessary amino acids.
 type AminoAcids struct {
 	// Aliphatic Amino Acids with Hydrophobic Side Chain
-	Alanine float32
+	Alanine    float32
 	Isoleucine float32
-	Leucine float32
-	Valine float32
+	Leucine    float32
+	Valine     float32
 
 	// Aromatic Amino Acids with Hydrophobic Side Chain
 	Phenylalanine float32
-	Tryptophan float32
-	Tyrosine float32
+	Tryptophan    float32
+	Tyrosine      float32
 
 	// Amino Acids with Neutral Side Chain
 	Asparagine float32
-	Cysteine float32
-	Glutamine float32
+	Cysteine   float32
+	Glutamine  float32
 	Methionine float32
-	Serine float32
-	Threonine float32
+	Serine     float32
+	Threonine  float32
 
 	// Amino Acids with Positive Charged Side Chain
-	Arginine float32
+	Arginine  float32
 	Histidine float32
-	Lysine float32
+	Lysine    float32
 
 	// Amino Acids with Negative Charged Side Chain
 	AsparticAcid float32
@@ -50,6 +52,7 @@ type AminoAcids struct {
 	Proline float32
 }
 
+// NewIngredient converts USDA REST API JSON response and returns Ingredient structure.
 func NewIngredient(ingredientID string, usdaResponseBody []byte) (foodDetails Ingredient, err error) {
 	foodDetails = Ingredient{}
 	var responseMapTemplate interface{}
