@@ -1,7 +1,7 @@
 # Amino acid calculator core 
 
-[![Build Status](https://travis-ci.com/MaciejTe/amino-acid-calc-core.svg?branch=master)](https://travis-ci.com/MaciejTe/bookings-API) 
-[![Coverage Status](https://coveralls.io/repos/github/MaciejTe/amino-acid-calc-core/badge.svg?branch=master)](https://coveralls.io/github/MaciejTe/bookings-API?branch=master)
+[![Build Status](https://travis-ci.com/MaciejTe/amino-acid-calc-core.svg?branch=master)](https://travis-ci.com/MaciejTe/amino-acid-calc-core) 
+[![Coverage Status](https://coveralls.io/repos/github/MaciejTe/amino-acid-calc-core/badge.svg?branch=master)](https://coveralls.io/github/MaciejTe/amino-acid-calc-core?branch=master)
 
 Amino acid calculator core application.
 
