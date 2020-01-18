@@ -1,6 +1,7 @@
 package calculate
 
 import (
+	"fmt"
 	"github.com/MaciejTe/amino-acid-calc/db"
 	"github.com/MaciejTe/amino-acid-calc/pkg/calculator"
 	"github.com/davecgh/go-spew/spew"
@@ -48,7 +49,12 @@ func Recipe() *cobra.Command {
 			}
 			log.Debug("Returned row successfully scanned into Recipe structure")
 			nutritionFacts, err := recipe.GetRecipeNutritionFacts()
-			spew.Dump(nutritionFacts, err, "::::::")
+			if err != nil {
+				fmt.Printf("Failed to get recipe nutrition facts: %v", err)
+			} else {
+				fmt.Print("Nutrition facts sum: \n")
+				spew.Dump(nutritionFacts.NutritionFactsSum)
+			}
 		},
 	}
 	//detailsCmd.PersistentFlags().StringVarP(&ingredientID, "fid", "i", "", "Ingredient ID to search for")
