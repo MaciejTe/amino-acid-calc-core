@@ -22,7 +22,14 @@
 ##
 #######################################
 -->
-
+0.0.2 (18.01.2020)
+---------------------
+    - Added "calculate" subcommand CLI section (with recipe command)
+    - Improved ingredient search & details commands
+    - Added Calculator interface with implementing structure: Recipe
+    - Created tables: recipes, amino_acids, nutrition_facts and ingredients (not used yet)
+    - Added "Branded": true option for USDA DB client for easier ingredients matching; solution will be improved in future
+    
 0.0.1 (27.12.2019)
 ---------------------
     - Added ingredients subcommand CLI section (with details and search commands)

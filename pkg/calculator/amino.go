@@ -1,7 +1,8 @@
-package pkg
+package calculator
 
 import (
 	"encoding/json"
+	"errors"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cast"
 )
@@ -17,7 +18,7 @@ type Ingredient struct {
 	Kcal          float32
 }
 
-// AminoAcids structure holds all necessary amino acids.
+// aminoAcids structure holds all necessary amino acids.
 type AminoAcids struct {
 	// Aliphatic Amino Acids with Hydrophobic Side Chain
 	Alanine    float32
@@ -53,10 +54,15 @@ type AminoAcids struct {
 }
 
 // NewIngredient converts USDA REST API JSON response and returns Ingredient structure.
-func NewIngredient(ingredientID string, usdaResponseBody []byte) (foodDetails Ingredient, err error) {
-	foodDetails = Ingredient{}
+func NewIngredient(ingredientID string, usdaResponseBody []byte) (foodDetails *Ingredient, err error) {
+	if ingredientID == "" {
+		errMsg := "NewIngredient received empty ingredientID string"
+		log.Error(errMsg)
+		return nil, errors.New(errMsg)
+	}
+	foodDetails = &Ingredient{}
 	var responseMapTemplate interface{}
-	log.Debug("NewIngredient constructor started...")
+	log.Debugf("Launching NewIngredient for ingredient %v...", ingredientID)
 	err = json.Unmarshal(usdaResponseBody, &responseMapTemplate)
 	if err != nil {
 		log.Error("Cannot unmarshal JSON response: ", err)
@@ -123,5 +129,6 @@ func NewIngredient(ingredientID string, usdaResponseBody []byte) (foodDetails In
 			}
 		}
 	}
+	log.Debugf("Launching NewIngredient for ingredient %v... DONE", ingredientID)
 	return
 }

@@ -1,22 +1,21 @@
 package ingredient
 
 import (
+	"github.com/MaciejTe/amino-acid-calc/pkg/usda"
 	"github.com/davecgh/go-spew/spew"
+	"github.com/spf13/viper"
 	"time"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
-
-	"github.com/MaciejTe/amino-acid-calc/pkg/usda"
 )
 
 var (
 	food string
 )
 
-// IngredientSearch searches for possible ingredients in USDA database.
-func IngredientSearch(ingredientCmd *cobra.Command) {
+// Search searches for possible ingredients in USDA database.
+func Search() *cobra.Command {
 	searchCmd := &cobra.Command{
 		Use:   "search",
 		Short: "Search for food in USDA database",
@@ -32,22 +31,27 @@ func IngredientSearch(ingredientCmd *cobra.Command) {
 			})
 		},
 		Run: func(cmd *cobra.Command, args []string) {
-			log.Debug("Running command food search with parameter ", food)
-			config := viper.GetStringMapString("core")
-			if config["usda_api_key"] == "" {
-				log.Error("USDA API key configuration missing")
-				return
-			}
-			client := usda.NewClient(config["usda_api_key"])
-			resp, err := client.FoodSearch(food)
-			if err != nil {
-				log.Error("Food search request error: ", err)
-				return
-			}
-			log.Debug("USDA response code: ", resp.StatusCode())
-			spew.Dump(resp)
+			ingredientSearch()
 		},
 	}
 	searchCmd.PersistentFlags().StringVarP(&food, "food", "f", "", "Food to search for")
-	ingredientCmd.AddCommand(searchCmd)
+	return searchCmd
+}
+
+
+func ingredientSearch() {
+	log.Debugf("Running command food search with parameter ", food)
+	config := viper.GetStringMapString("core")
+	if config["usda_api_key"] == "" {
+		log.Error("USDA API key configuration missing")
+		return
+	}
+	client := usda.NewClient(config["usda_api_key"])
+	resp, err := client.FoodSearch(food)
+	if err != nil {
+		log.Error("Food search request error: ", err)
+		return
+	}
+	log.Debug("USDA response code: ", resp.StatusCode())
+	spew.Dump(resp)
 }

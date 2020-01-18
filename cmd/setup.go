@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"github.com/MaciejTe/amino-acid-calc/cmd/calculate"
 	"github.com/MaciejTe/amino-acid-calc/cmd/ingredient"
 	"github.com/spf13/viper"
 	"os"
@@ -13,11 +14,6 @@ var (
 	// nolint: gochecknoglobals
 	cfgFile string
 )
-
-func setupIngredientCommands(ingredientCmd *cobra.Command) {
-	ingredient.IngredientSearch(ingredientCmd)
-	ingredient.IngredientDetails(ingredientCmd)
-}
 
 func initConfig() {
 	if cfgFile != "" {
@@ -64,7 +60,7 @@ func Execute() int {
 	}
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file")
 
-	var ingredientCmd = &cobra.Command{
+	var ingredientCmd = &cobra.Command {
 		Use:   "ingredient",
 		Short: "Ingredient related commands",
 		Long:  "Ingredient related commands",
@@ -80,9 +76,31 @@ func Execute() int {
 			}
 		},
 	}
-	rootCmd.AddCommand(ingredientCmd)
 
-	setupIngredientCommands(ingredientCmd)
+	var calculateCmd = &cobra.Command{
+		Use:   "calculate",
+		Short: "Calculation section",
+		Long:  "Commands related to calculating macro and microelements in recipes",
+		Run: func(cmd *cobra.Command, args []string) {
+			// print help and quit
+			if len(args) == 0 {
+				err := cmd.Help()
+				if err != nil {
+					log.Error(err)
+					os.Exit(1)
+				}
+				os.Exit(0)
+			}
+		},
+	}
+
+	rootCmd.AddCommand(ingredientCmd)
+	rootCmd.AddCommand(calculateCmd)
+
+	ingredientCmd.AddCommand(ingredient.Search())
+	ingredientCmd.AddCommand(ingredient.Details())
+
+	calculateCmd.AddCommand(calculate.Recipe())
 
 	cobra.OnInitialize(initConfig)
 	if err := rootCmd.Execute(); err != nil {
