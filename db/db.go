@@ -19,12 +19,12 @@ func NewDbClient() (*sql.DB, error) {
 
 	db, err := sql.Open("postgres", connectionInfo)
 	if err != nil {
-		log.Fatalf("Failed to connect to database! Details: ", err)
+		log.Fatalf("Failed to connect to database! Details: %v", err)
 	}
 
 	err = db.Ping()
 	if err != nil {
-		log.Fatalf("Failed to ping the database! Details: ", err)
+		log.Fatalf("Failed to ping the database! Details: %v", err)
 	}
 
 	log.Debug("Successfully connected to the database!")

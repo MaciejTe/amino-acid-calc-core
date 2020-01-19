@@ -40,7 +40,7 @@ func Search() *cobra.Command {
 
 
 func ingredientSearch() {
-	log.Debugf("Running command food search with parameter ", food)
+	log.Debugf("Running command food search with parameter %v", food)
 	config := viper.GetStringMapString("core")
 	if config["usda_api_key"] == "" {
 		log.Error("USDA API key configuration missing")

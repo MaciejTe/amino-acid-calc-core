@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	log "github.com/sirupsen/logrus"
-	"github.com/spf13/cast"
 )
 
 // Ingredient structure holds information about all major food data.
@@ -53,6 +52,19 @@ type AminoAcids struct {
 	Proline float32
 }
 
+type Nutrient struct {
+	NutrientData struct {
+		Name string `json:"name"`
+		UnitName string `json:"unitName"`
+	} `json:"nutrient"`
+	Amount float32 `json:"amount"`
+}
+
+type UsdaDetailResponse struct {
+	Description string `json:"description"`
+	FoodNutrients []Nutrient `json:"foodNutrients"`
+}
+
 // NewIngredient converts USDA REST API JSON response and returns Ingredient structure.
 func NewIngredient(ingredientID string, usdaResponseBody []byte) (foodDetails *Ingredient, err error) {
 	if ingredientID == "" {
@@ -61,72 +73,68 @@ func NewIngredient(ingredientID string, usdaResponseBody []byte) (foodDetails *I
 		return nil, errors.New(errMsg)
 	}
 	foodDetails = &Ingredient{}
-	var responseMapTemplate interface{}
+	usdaDetailResponse := UsdaDetailResponse{}
 	log.Debugf("Launching NewIngredient for ingredient %v...", ingredientID)
-	err = json.Unmarshal(usdaResponseBody, &responseMapTemplate)
+	err = json.Unmarshal(usdaResponseBody, &usdaDetailResponse)
 	if err != nil {
-		log.Error("Cannot unmarshal JSON response: ", err)
-		return
+		errMsg := "cannot unmarshal JSON response: " + err.Error()
+		log.Errorf(errMsg)
+		return nil, errors.New(errMsg)
 	}
-	responseMap := responseMapTemplate.(map[string]interface{})
-	foodDetails.Description = cast.ToString(responseMap["description"])
+	foodDetails.Description = usdaDetailResponse.Description
 	foodDetails.ID = ingredientID
-	for _, nutrientMap := range responseMap["foodNutrients"].([]interface{}) {
-		for key, nutrientNameMap := range nutrientMap.(map[string]interface{}) {
-			if key == "nutrient" {
-				nutrientNameMapCasted := nutrientNameMap.(map[string]interface{})
-				nutrientMapCasted := nutrientMap.(map[string]interface{})
-				switch nutrientNameMapCasted["name"] {
-				case "Carbohydrate, by summation":
-					foodDetails.Carbohydrates = cast.ToFloat32(nutrientMapCasted["amount"])
-				case "Protein":
-					foodDetails.Protein = cast.ToFloat32(nutrientMapCasted["amount"])
-				case "Energy":
-					foodDetails.Kcal = cast.ToFloat32(nutrientMapCasted["amount"])
-				case "Total lipid (fat)":
-					foodDetails.Fat = cast.ToFloat32(nutrientMapCasted["amount"])
-				case "Alanine":
-					foodDetails.AminoAcids.Alanine = cast.ToFloat32(nutrientMapCasted["amount"])
-				case "Isoleucine":
-					foodDetails.AminoAcids.Isoleucine = cast.ToFloat32(nutrientMapCasted["amount"])
-				case "Leucine":
-					foodDetails.AminoAcids.Leucine = cast.ToFloat32(nutrientMapCasted["amount"])
-				case "Valine":
-					foodDetails.AminoAcids.Valine = cast.ToFloat32(nutrientMapCasted["amount"])
-				case "Phenylalanine":
-					foodDetails.AminoAcids.Phenylalanine = cast.ToFloat32(nutrientMapCasted["amount"])
-				case "Tryptophan":
-					foodDetails.AminoAcids.Tryptophan = cast.ToFloat32(nutrientMapCasted["amount"])
-				case "Tyrosine":
-					foodDetails.AminoAcids.Tyrosine = cast.ToFloat32(nutrientMapCasted["amount"])
-				case "Asparagine":
-					foodDetails.AminoAcids.Asparagine = cast.ToFloat32(nutrientMapCasted["amount"])
-				case "Cysteine":
-					foodDetails.AminoAcids.Cysteine = cast.ToFloat32(nutrientMapCasted["amount"])
-				case "Glutamine":
-					foodDetails.AminoAcids.Glutamine = cast.ToFloat32(nutrientMapCasted["amount"])
-				case "Methionine":
-					foodDetails.AminoAcids.Methionine = cast.ToFloat32(nutrientMapCasted["amount"])
-				case "Serine":
-					foodDetails.AminoAcids.Serine = cast.ToFloat32(nutrientMapCasted["amount"])
-				case "Threonine":
-					foodDetails.AminoAcids.Threonine = cast.ToFloat32(nutrientMapCasted["amount"])
-				case "Arginine":
-					foodDetails.AminoAcids.Arginine = cast.ToFloat32(nutrientMapCasted["amount"])
-				case "Histidine":
-					foodDetails.AminoAcids.Histidine = cast.ToFloat32(nutrientMapCasted["amount"])
-				case "Lysine":
-					foodDetails.AminoAcids.Lysine = cast.ToFloat32(nutrientMapCasted["amount"])
-				case "Aspartic acid":
-					foodDetails.AminoAcids.AsparticAcid = cast.ToFloat32(nutrientMapCasted["amount"])
-				case "Glutamic acid":
-					foodDetails.AminoAcids.GlutamicAcid = cast.ToFloat32(nutrientMapCasted["amount"])
-				case "Glycine":
-					foodDetails.AminoAcids.Glycine = cast.ToFloat32(nutrientMapCasted["amount"])
-				case "Proline":
-					foodDetails.AminoAcids.Proline = cast.ToFloat32(nutrientMapCasted["amount"])
-				}
+	for _, nutrient := range usdaDetailResponse.FoodNutrients {
+		switch nutrient.NutrientData.Name {
+		case "Carbohydrate, by summation":
+			foodDetails.Carbohydrates = nutrient.Amount
+		case "Protein":
+			foodDetails.Protein = nutrient.Amount
+		case "Energy":
+			if nutrient.NutrientData.UnitName == "kcal" {
+				foodDetails.Kcal = nutrient.Amount
 			}
+		case "Total lipid (fat)":
+			foodDetails.Fat = nutrient.Amount
+		case "Alanine":
+			foodDetails.AminoAcids.Alanine = nutrient.Amount
+		case "Isoleucine":
+			foodDetails.AminoAcids.Isoleucine = nutrient.Amount
+		case "Leucine":
+			foodDetails.AminoAcids.Leucine = nutrient.Amount
+		case "Valine":
+			foodDetails.AminoAcids.Valine = nutrient.Amount
+		case "Phenylalanine":
+			foodDetails.AminoAcids.Phenylalanine = nutrient.Amount
+		case "Tryptophan":
+			foodDetails.AminoAcids.Tryptophan = nutrient.Amount
+		case "Tyrosine":
+			foodDetails.AminoAcids.Tyrosine = nutrient.Amount
+		case "Asparagine":
+			foodDetails.AminoAcids.Asparagine = nutrient.Amount
+		case "Cysteine":
+			foodDetails.AminoAcids.Cysteine = nutrient.Amount
+		case "Glutamine":
+			foodDetails.AminoAcids.Glutamine = nutrient.Amount
+		case "Methionine":
+			foodDetails.AminoAcids.Methionine = nutrient.Amount
+		case "Serine":
+			foodDetails.AminoAcids.Serine = nutrient.Amount
+		case "Threonine":
+			foodDetails.AminoAcids.Threonine = nutrient.Amount
+		case "Arginine":
+			foodDetails.AminoAcids.Arginine = nutrient.Amount
+		case "Histidine":
+			foodDetails.AminoAcids.Histidine = nutrient.Amount
+		case "Lysine":
+			foodDetails.AminoAcids.Lysine = nutrient.Amount
+		case "Aspartic acid":
+			foodDetails.AminoAcids.AsparticAcid = nutrient.Amount
+		case "Glutamic acid":
+			foodDetails.AminoAcids.GlutamicAcid = nutrient.Amount
+		case "Glycine":
+			foodDetails.AminoAcids.Glycine = nutrient.Amount
+		case "Proline":
+			foodDetails.AminoAcids.Proline = nutrient.Amount
 		}
 	}
 	log.Debugf("Launching NewIngredient for ingredient %v... DONE", ingredientID)

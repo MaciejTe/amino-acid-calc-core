@@ -31,7 +31,7 @@ func Recipe() *cobra.Command {
 			})
 		},
 		Run: func(cmd *cobra.Command, args []string) {
-			log.Debugf("Running command calculate recipe with parameter ", ingredientID)
+			log.Debugf("Running command calculate recipe with parameter %v", ingredientID)
 			dbClient, err := db.NewDbClient()
 			if err != nil {
 				log.Fatalf("Cannot create DB client! Details: %v", err)

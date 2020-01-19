@@ -40,7 +40,7 @@ func Details() *cobra.Command { // ingredientCmd *cobra.Command
 }
 
 func getIngredientDetails() {
-	log.Debugf("Running command food details with parameter ", ingredientID)
+	log.Debugf("Running command food details with parameter %v", ingredientID)
 	config := viper.GetStringMapString("core")
 	if config["usda_api_key"] == "" {
 		log.Error("USDA API key configuration missing")
