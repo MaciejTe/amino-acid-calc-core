@@ -1,7 +1,7 @@
 # Amino acid calculator core 
 
 [![Build Status](https://travis-ci.com/MaciejTe/amino-acid-calc-core.svg?branch=master)](https://travis-ci.com/MaciejTe/amino-acid-calc-core) 
-[![Coverage Status](https://coveralls.io/repos/github/MaciejTe/amino-acid-calc-core/badge.svg?branch=master)](https://coveralls.io/github/MaciejTe/amino-acid-calc-core?branch=master)
+[![Coverage Status](https://codecov.io/gh/MaciejTe/amino-acid-calc-core/branch/master/graph/badge.svg)](https://codecov.io/gh/MaciejTe/amino-acid-calc-core?branch=master)
 [![Go Report Card](https://goreportcard.com/badge/github.com/MaciejTe/amino-acid-calc-core)](https://goreportcard.com/report/github.com/MaciejTe/amino-acid-calc-core)
 [![Documentation](https://godoc.org/github.com/MaciejTe/amino-acid-calc-core?status.svg)](https://godoc.org/github.com/MaciejTe/amino-acid-calc-core)
 [![License](https://img.shields.io/github/license/MaciejTe/amino-acid-calc-core.svg?maxAge=2592000)](https://github.com/MaciejTe/amino-acid-calc-core/blob/master/LICENSE)
