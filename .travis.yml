@@ -10,7 +10,7 @@ before_install:
   - go get -t -v ./...
 
 script:
-  - go test -race -coverprofile=coverage.txt -covermode=atomic
+  - go test -race -coverprofile=coverage.txt -covermode=atomic -v ./...
   - go mod verify
   - GOOS=linux go build
 
